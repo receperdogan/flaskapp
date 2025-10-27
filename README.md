@@ -50,6 +50,58 @@ docker run -p 8000:8000 \
   flask-app:latest
 ```
 
+### Kubernetes
+
+Deploy the Flask application to Kubernetes using the provided YAML configuration:
+
+```bash
+# Apply the Kubernetes configuration
+kubectl apply -f flaskapp.yaml
+
+# Check deployment status
+kubectl get pods -n flask-app
+kubectl get services -n flask-app
+kubectl get ingress -n flask-app
+
+# View logs
+kubectl logs -f deployment/flask-app -n flask-app
+
+# Port forward for local testing (if not using ingress)
+kubectl port-forward service/flask-app 8000:8000 -n flask-app
+```
+
+The Kubernetes deployment includes:
+
+- **Namespace**: `flask-app` - isolated namespace for the application
+- **Deployment**: Flask application with configurable replicas
+- **Service**: ClusterIP service exposing port 8000
+- **Ingress**: NGINX ingress for external access at `flask-app.local`
+
+#### Environment Variables in Kubernetes
+
+The deployment configures the following environment variables:
+
+- `SERVICE_NAME`: "flask-app"
+- `PORT`: "8000"
+- `AUTO_TRACE_ENABLED`: "true" - enables automatic trace generation
+- `AUTO_TRACE_INTERVAL`: "30" - interval in seconds for auto-traces
+- `OTEL_EXPORTER_OTLP_ENDPOINT`: Configure your OTLP collector endpoint
+
+#### Accessing the Application
+
+1. **Via Ingress**: Add `flask-app.local` to your `/etc/hosts` file pointing to your ingress IP
+2. **Via Port Forward**: Use `kubectl port-forward` as shown above
+3. **Via Service**: Access directly from within the cluster
+
+#### Customizing the Deployment
+
+Edit `flaskapp.yaml` to modify:
+- Replica count
+- Resource limits/requests
+- Environment variables
+- Ingress hostname
+- OTLP collector endpoint
+
 ## Testing
 
 ```bash
