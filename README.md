@@ -1,4 +1,4 @@
-# Dummy App - Python Flask with OpenTelemetry
+# flask App - Python Flask with OpenTelemetry
 
 A simple Python Flask application that generates logs and sends traces via OTLP protocol.
 
@@ -12,7 +12,7 @@ A simple Python Flask application that generates logs and sends traces via OTLP 
 
 - `PORT`: Application port (default: 8000)
 - `OTEL_EXPORTER_OTLP_ENDPOINT`: OTLP endpoint URL (default: http://localhost:4318)
-- `SERVICE_NAME`: Service name for traces (default: dummy-app)
+- `SERVICE_NAME`: Service name for traces (default: flask-app)
 
 ## Endpoints
 
@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 # Run the application
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-export SERVICE_NAME=dummy-app
+export SERVICE_NAME=flask-app
 python app.py
 ```
 
@@ -41,13 +41,13 @@ python app.py
 
 ```bash
 # Build the image
-docker build -t dummy-app:latest .
+docker build -t flask-app:latest .
 
 # Run the container
 docker run -p 8000:8000 \
   -e OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318 \
-  -e SERVICE_NAME=dummy-app \
-  dummy-app:latest
+  -e SERVICE_NAME=flask-app \
+  flask-app:latest
 ```
 
 ## Testing
